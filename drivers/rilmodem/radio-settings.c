@@ -32,7 +32,7 @@
 #include <errno.h>
 
 #include <glib.h>
-
+#include <glib/gprintf.h>
 #include <ofono/log.h>
 #include <ofono/modem.h>
 #include <ofono/radio-settings.h>
@@ -295,6 +295,9 @@ static void ril_query_available_rats(struct ofono_radio_settings *rs,
 			void *data)
 {
 	unsigned int available_rats;
+
+
+
 	struct ofono_modem *modem = ofono_radio_settings_get_modem(rs);
 
 	available_rats = OFONO_RADIO_ACCESS_MODE_GSM
@@ -438,6 +441,8 @@ static int ril_radio_settings_probe(struct ofono_radio_settings *rs,
 	rsd->vendor = vendor;
 
 	ofono_radio_settings_set_data(rs, rsd);
+
+	g_printf("about to call ril_set_fast_dormancy\n");
 
 	ril_set_fast_dormancy(rs, FALSE, ril_delayed_register, rs);
 

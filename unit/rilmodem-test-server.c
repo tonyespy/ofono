@@ -29,6 +29,12 @@
 #include <sys/un.h>
 #include <unistd.h>
 
+#include <glib.h>
+
+//TODO: remove
+#include <glib/gprintf.h>
+
+
 #include <ofono/types.h>
 
 #include <gril.h>
@@ -66,6 +72,9 @@ static gboolean read_server(gpointer data)
 
 	status = g_io_channel_read_chars(sd->server_io, buf, MAX_REQUEST_SIZE,
 								&rbytes, NULL);
+
+	g_printf("rbytes %zu req_sz %zu!\n", rbytes, sd->rtd->req_size);
+
 	g_assert(status == G_IO_STATUS_NORMAL);
 	g_assert(rbytes == sd->rtd->req_size);
 

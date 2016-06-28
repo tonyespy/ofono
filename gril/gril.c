@@ -37,6 +37,7 @@
 #include <unistd.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 
 #include <ofono/log.h>
 #include "ringbuffer.h"
@@ -256,6 +257,8 @@ static struct ril_request *ril_request_create(struct ril_s *ril,
 	if (rilp != NULL)
 		data_len = rilp->size;
 
+	g_printf("\nril_request_create: data_len: %u\n", data_len);
+	
 	r = g_try_new0(struct ril_request, 1);
 	if (r == NULL) {
 		ofono_error("%s Out of memory", __func__);
@@ -264,6 +267,8 @@ static struct ril_request *ril_request_create(struct ril_s *ril,
 
 	/* Full request size: header size plus buffer length */
 	r->data_len = data_len + sizeof(header);
+
+	g_printf("ril_reques_create: r->data_len: %u\n", r->data_len);
 
 	r->data = g_try_new(char, r->data_len);
 	if (r->data == NULL) {
@@ -712,8 +717,10 @@ static gboolean can_write_data(gpointer data)
 
 out:
 	len = req->data_len;
+	g_printf("len: %zu!\n", len);	
 
 	towrite = len - ril->req_bytes_written;
+	g_printf("towrite: %zu!\n", towrite);	
 
 #ifdef WRITE_SCHEDULER_DEBUG
 	if (towrite > 5)
@@ -723,6 +730,8 @@ out:
 	bytes_written = g_ril_io_write(ril->io,
 					req->data + ril->req_bytes_written,
 					towrite);
+
+	g_printf("bytes_written: %zu!\n", bytes_written);
 
 	if (bytes_written == 0)
 		return FALSE;

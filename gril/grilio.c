@@ -31,6 +31,7 @@
 #include <errno.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 
 #include "ringbuffer.h"
 #include "grilio.h"
@@ -140,6 +141,9 @@ gsize g_ril_io_write(GRilIO *io, const gchar *data, gsize count)
 	GIOStatus status;
 	gsize bytes_written;
 
+
+	g_printf("count: %zu!\n", count);
+	
 	status = g_io_channel_write_chars(io->channel, data,
 						count, &bytes_written, NULL);
 
